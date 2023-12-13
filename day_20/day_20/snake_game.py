@@ -6,7 +6,7 @@ from snake import Snake
 from food import Food
 from scoreboard import Scoreboard
 
-UPDATE_INTERVAL = 0.2
+UPDATE_INTERVAL = 0.1
 
 screen = Screen()
 screen.setup(height=600, width=600)
@@ -38,7 +38,7 @@ while game_is_on:
         snake.extend()
 
     # Detect collision with wall
-    if not (-280 <= snake.head.xcor() <= 280 and -280 <= snake.head.ycor() <= 280):
+    if not (-290 <= snake.head.xcor() <= 290 and -290 <= snake.head.ycor() <= 290):
         game_is_on = False
         score.game_over()
 
