@@ -25,6 +25,6 @@ class CarManager:
 
     def move(self, level):
         for car in self.cars:
-            car.forward((1 + (0.1 * level)) * car.move_speed)
+            car.forward((1 + (0.25 * level)) * car.move_speed)
             if car.xcor() < -310:
                 car.setpos(310, random.choice(range(-220, 221, 20)))

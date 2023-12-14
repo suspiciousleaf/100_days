@@ -10,6 +10,8 @@ class Scoreboard(Turtle):
         super().__init__()
         self.penup()
         self.current_score = 0
+        with open("day_20_snake/day_20/snake_high_score.txt", "r") as infile:
+            self.high_score = int(infile.read())
         self.setpos(0, 260)
         self.color("white")
         self.hideturtle()
@@ -18,7 +20,7 @@ class Scoreboard(Turtle):
     def update_scoreboard(self):
         self.clear()
         self.write(
-            f"Score: {self.current_score:2}",
+            f"Score: {self.current_score:2}  High score: {self.high_score:2}",
             align=ALIGNMENT,
             font=FONT,
         )
@@ -27,10 +29,18 @@ class Scoreboard(Turtle):
         self.current_score += 1
         self.update_scoreboard()
 
-    def game_over(self):
-        self.setpos(0, 0)
-        self.write(
-            "GAME OVER",
-            align=ALIGNMENT,
-            font=GAME_OVER_FONT,
-        )
+    def reset_game(self):
+        if self.current_score > self.high_score:
+            self.high_score = self.current_score
+            with open("day_20_snake/day_20/snake_high_score.txt", "w") as outfile:
+                outfile.write(str(self.high_score))
+        self.current_score = 0
+        self.update_scoreboard()
+
+    # def game_over(self):
+    #     self.setpos(0, 0)
+    #     self.write(
+    #         "GAME OVER",
+    #         align=ALIGNMENT,
+    #         font=GAME_OVER_FONT,
+    #     )

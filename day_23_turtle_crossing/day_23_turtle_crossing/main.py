@@ -19,11 +19,12 @@ screen.onkeypress(player.move_down, "Down")
 
 game_is_on = True
 while game_is_on:
-    if len(car_manager.cars) < 30:
+    if len(car_manager.cars) < 20:
         car_manager.create_cars()
     time.sleep(0.05)
     screen.update()
     if player.detect_win():
+        player.reset_player()
         scoreboard.level_complete()
     car_manager.move(scoreboard.level)
 

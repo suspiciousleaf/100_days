@@ -28,6 +28,4 @@ class Player(Turtle):
             self.backward(MOVE_DISTANCE)
 
     def detect_win(self):
-        if self.ycor() >= FINISH_LINE_Y:
-            self.reset_player()
-            return True
+        return self.ycor() >= FINISH_LINE_Y
