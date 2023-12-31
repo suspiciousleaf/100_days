@@ -60,7 +60,7 @@ while game_running:
             if state not in correct_guesses:
                 find_and_print_state(state)
 
-    if answer_state in all_states:
+    if answer_state in all_states and answer_state not in correct_guesses:
         correct_guesses.append(answer_state)
         find_and_print_state(answer_state)
         score += 1
