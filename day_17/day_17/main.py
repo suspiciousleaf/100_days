@@ -1,12 +1,13 @@
 # c:/Users/David/Documents/Programming/Python/Code_list/Projects/100_days/day_17/day_17_env/Scripts/Activate.ps1
-
+import html
 from data import question_data
 
 from question_model import Question
 from quiz_brain import QuizBrain
 
 question_bank = [
-    Question(line["question"], line["correct_answer"]) for line in question_data
+    Question(html.unescape(line["question"]), line["correct_answer"])
+    for line in question_data
 ]
 
 quiz = QuizBrain(question_bank)
