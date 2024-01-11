@@ -1,3 +1,4 @@
 *env/
 __pycache__/
 email_details.py
+credentials.py
