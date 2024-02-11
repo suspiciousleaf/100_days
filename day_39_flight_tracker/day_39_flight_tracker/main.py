@@ -7,33 +7,39 @@ from pprint import pprint
 from flight_search import FlightSearch
 from data_manager import DataManager
 
+from notification_manager import NotificationManager
+
 flight_search = FlightSearch()
 
+notification_manager = NotificationManager()
+
 data_manager = DataManager()
-# data_manager.get_destination_data()
+data_manager.get_destination_data()
 
-# for destination in data_manager.destination_data:
-#     if not destination["iataCode"]:
-#         try:
-#             destination["iataCode"] = flight_search.get_iata(destination["city"])
-#             data_manager.update_iata(destination)
-#         except:
-#             print(f"Cannot add IATA Code for {destination['city']}")
+for destination in data_manager.destination_data:
+    if not destination["iataCode"]:
+        try:
+            destination["iataCode"] = flight_search.get_iata(destination["city"])
+            data_manager.update_iata(destination)
+        except:
+            print(f"Cannot add IATA Code for {destination['city']}")
 
-destinations = [
-    {"city": "Paris", "iataCode": "PAR", "id": 2, "lowestPrice": 500},
-    {"city": "Berlin", "iataCode": "BER", "id": 3, "lowestPrice": 500},
-    {"city": "Tokyo", "iataCode": "TYO", "id": 4, "lowestPrice": 5000},
-    {"city": "Sydney", "iataCode": "SYD", "id": 5, "lowestPrice": 5000},
-]
+# destinations = [
+#     {"city": "Paris", "iataCode": "PAR", "id": 2, "lowestPrice": 500},
+#     {"city": "Berlin", "iataCode": "BER", "id": 3, "lowestPrice": 500},
+#     {"city": "Tokyo", "iataCode": "TYO", "id": 4, "lowestPrice": 5000},
+#     {"city": "Sydney", "iataCode": "SYD", "id": 5, "lowestPrice": 5000},
+# ]
 
-for destination in destinations:
+for destination in data_manager.destination_data:
     response = flight_search.find_flights(destination)
-    # break
-    # pprint(response)
     if response["_results"]:
+        # pprint(response)
         print(
-            f'From {response["data"][0]["cityFrom"]} to {response["data"][0]["cityTo"]}: £{response["data"][0]["price"]}'
+            f'{response["data"][0]["cityFrom"]} to {response["data"][0]["cityTo"]}: € {response["data"][0]["price"]}'
         )
+        notification_manager.send_sms(response)
+        # break
+
 
 # pprint(data_manager.destination_data)

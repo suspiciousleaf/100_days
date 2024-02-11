@@ -1,5 +1,6 @@
 import requests
 from pprint import pprint
+import datetime
 
 from credentials import *
 
@@ -45,14 +46,22 @@ class FlightSearch:
 
         """You can also search using a radius. It needs to be in form lat-lon-xkm. The number of decimal places for radius is limited to 6.  E.g.-23.24--47.86-500km for places around Sao Paulo."""
 
+        date_from = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime(
+            "%d/%m/%Y"
+        )
+        date_to = (datetime.datetime.now() + datetime.timedelta(days=181)).strftime(
+            "%d/%m/%Y"
+        )
+
         params = {
             "fly_from": "LON",
             "fly_to": destination["iataCode"],
-            "date_from": "12/02/2024",
-            "date_to": "12/03/2024",
+            "date_from": date_from,
+            "date_to": date_to,
             "price_to": destination["lowestPrice"],
             "max_stopovers": 0,
             "locale": "en",
+            "curr": "EUR",
             "limit": 2,
             "sort": "price",
         }
