@@ -1,6 +1,7 @@
 # c:/Users/David/Documents/Programming/Python/Code_list/Projects/100_days/day_35/day_35_env/Scripts/Activate.ps1
 
 import requests
+from twilio.rest import Client
 from credentials import *
 from pprint import pprint
 
@@ -22,10 +23,37 @@ except Exception as e:
 
 weather = weather_raw.json()
 
-for i, hour in enumerate(weather["hourly"]):
-    if i < 12:
-        if hour["weather"][0]["id"] < 700:
-            print("Rain incoming!")
-            break
+will_rain = False
 
-# Video 4, 7:45
+for hour in weather["hourly"][:12]:
+    if hour["weather"][0]["id"] < 700:
+        will_rain = True
+
+
+if will_rain:
+    print("Rain incoming!")
+
+    account_sid = TWILIO_ACCOUNT_SID
+    auth_token = TWILIO_AUTH_TOKEN
+    client = Client(account_sid, auth_token)
+
+    message = client.messages.create(
+        body="Remember to pack an umbrella!",
+        from_=twilio_number,
+        to=my_number,
+    )
+else:
+    print("No rain today")
+
+    account_sid = TWILIO_ACCOUNT_SID
+    auth_token = TWILIO_AUTH_TOKEN
+    client = Client(account_sid, auth_token)
+
+    message = client.messages.create(
+        body="No rain today",
+        from_=twilio_number,
+        to=my_number,
+    )
+
+
+print(message.status)
