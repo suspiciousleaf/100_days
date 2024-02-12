@@ -1,6 +1,7 @@
 # This file will need to use the DataManager,FlightSearch, FlightData, NotificationManager classes to achieve the program requirements.
 
 # c:/Users/David/Documents/Programming/Python/Code_list/Projects/100_days/day_39_flight_tracker/day_39_flight_tracker_env/Scripts/Activate.ps1
+import datetime
 
 from pprint import pprint
 
@@ -14,7 +15,7 @@ flight_search = FlightSearch()
 notification_manager = NotificationManager()
 
 data_manager = DataManager()
-data_manager.get_destination_data()
+data_manager.get_destination_data(use_dummy_data=True)
 
 for destination in data_manager.destination_data:
     if not destination["iataCode"]:
@@ -24,22 +25,24 @@ for destination in data_manager.destination_data:
         except:
             print(f"Cannot add IATA Code for {destination['city']}")
 
-# destinations = [
-#     {"city": "Paris", "iataCode": "PAR", "id": 2, "lowestPrice": 500},
-#     {"city": "Berlin", "iataCode": "BER", "id": 3, "lowestPrice": 500},
-#     {"city": "Tokyo", "iataCode": "TYO", "id": 4, "lowestPrice": 5000},
-#     {"city": "Sydney", "iataCode": "SYD", "id": 5, "lowestPrice": 5000},
-# ]
 
 for destination in data_manager.destination_data:
     response = flight_search.find_flights(destination)
     if response["_results"]:
         # pprint(response)
-        print(
-            f'{response["data"][0]["cityFrom"]} to {response["data"][0]["cityTo"]}: € {response["data"][0]["price"]}'
+        dep_date = datetime.datetime.fromtimestamp(
+            response["data"][0]["route"][0]["dTimeUTC"]
         )
-        notification_manager.send_sms(response)
-        # break
+        ret_date = datetime.datetime.fromtimestamp(
+            response["data"][0]["route"][1]["dTimeUTC"]
+        )
+        duration_raw = ret_date - dep_date
+        duration = int(duration_raw.days + (duration_raw.seconds / 86400) + 0.5)
+        print(
+            f'{response["data"][0]["cityFrom"]} to {response["data"][0]["cityTo"]}: € {response["data"][0]["price"]}. {dep_date.strftime("%d/%m/%y")} - {ret_date.strftime("%d/%m/%y")}, {duration} days'
+        )
+        # notification_manager.send_sms(response)
+        break
 
 
 # pprint(data_manager.destination_data)

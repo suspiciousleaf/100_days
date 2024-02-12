@@ -58,11 +58,14 @@ class FlightSearch:
             "fly_to": destination["iataCode"],
             "date_from": date_from,
             "date_to": date_to,
+            "nights_in_dst_from": 3,
+            "nights_in_dst_to": 14,
             "price_to": destination["lowestPrice"],
             "max_stopovers": 0,
             "locale": "en",
             "curr": "EUR",
-            "limit": 2,
+            "ret_to_diff_airport": 0,
+            "limit": 1,
             "sort": "price",
         }
         try:
